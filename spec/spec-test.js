@@ -1,4 +1,4 @@
-const bc = require("../blockchain.js");
+const bc = require("../node_modules/blockchain/index.js");
 
 // you can split block and blockchain off into their own files
 //const Block = require(../block.js)
