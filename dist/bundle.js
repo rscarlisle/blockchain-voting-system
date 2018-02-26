@@ -68,9 +68,6 @@
 /***/ (function(module, exports, __webpack_require__) {
 
 var blockchain = __webpack_require__(1);
-
-console.log("hello");
-
 var testBlock = new blockchain.Block(1, Date.now(), { voter: "Masha", votedFor: "Justin" });
 console.log(testBlock);
 
@@ -114,32 +111,6 @@ var html = template(y);
 // Append to the output area
 $("#cards").append(html);
 
-// once things are hooked up (google the error message: Uncaught ReferenceError: require is not defined)
-// (12:14pm) need to add jquery library above materializecss - done @ 12:23pm;
-
-// create a new Block in the blockchain
-// 12:24pm - in progress! Checked Chrome DevTools and had messages referring to "require" not being defined, etc.
-// Researched Stackoverflow, etc and could not solve. Minutes ago I remembered a lesson in PL about modules by
-// Brice Wilson. Found the perfect example! Time: (1:51pm)
-// I used npm to load systemjs
-// I examined my target files to see if they had any dependencies? Yes for: blockchain.js & for blockchainManager.js
-// Now, you can use the CommonJS syntax, using: "require" and you can add their dependency file(s);
-// Add the appropriate "export" statements at the bottom of those 2 modules;
-// Now, we need to fix the script references in the index.html file:
-// You may need to delete unnecessary script tags?
-// Add <script src="node_modules/systemjs/dist/system.js"></script>
-// Got some help from Masha; looks like we need a build process: enter -> webpack
-// (3:43pm) Still troubleshooting the problem.
-
-
-// write some JS, like a render function that gets all the blocks from the block chain
-// for each of the blocks
-//   grab the template card from the dom (might give it an id like #templateCard)
-//   clone the template card var dupNode = node.cloneNode([deep]);  make sure to pass deep = true
-//   https://developer.mozilla.org/en-US/docs/Web/API/Node/cloneNode
-//   select pieces of the template card dom and adjust their innerText based on info from the current block
-//   append the newly created card to the list of cards (.card-container)
-
 /***/ }),
 /* 1 */
 /***/ (function(module, exports, __webpack_require__) {
@@ -174,7 +145,8 @@ class Block {
 class Blockchain{
     constructor() {
         this.chain = [this.createGenesisBlock()];
-        this.difficulty = 5;
+        this.difficulty = 0;
+        // this.difficulty = 5;
     }
 
     createGenesisBlock() {
@@ -212,18 +184,53 @@ class Blockchain{
 module.exports.Block = Block;
 module.exports.Blockchain = Blockchain;
 
+let arr = [];
+for (let i = 1; i < 5; i++) {
+    let voterBlock = new Blockchain();
+    console.log('Mining block: ' + i + '...');
+    voterBlock.addBlock(new Block(i, "21/02/2017", { amount: 4 }));
+    // arr.push(voterBlock.chain[1].hash, 
+        // voterBlock.chain[1].nounce,
+        // voterBlock.chain[1].amount,
+        // voterBlock.chain[1].index,
+        // voterBlock.chain[1].timestamp,
+        // voterBlock.chain[1].data);
+    // console.log('voterBlock: ', arr);
+}
+
+// let jsonData = {};
+// for (i in arr) {
+//     jsonData[i] = arr[i];
+// }
+// jsonData = JSON.stringify(jsonData);
+// console.log('voterBlock: ', jsonData);
+
+
+/**
+ * Handlebars section
+ */
+// Read in the template's HTML content
+// const source = $("#cardTemplate").html();
+// // Compile it
+// const template = Handlebars.compile(source);
+// // Render the chain array
+// const html = template(jsonData);
+// // Append to the output area
+// $("#cards").append(html);
+
+
 let voterBlock = new Blockchain();
 console.log('Mining block 1...');
 voterBlock.addBlock(new Block(1, "21/02/2018", { amount: 4 }));
 
-console.log('Mining block 2...');
-voterBlock.addBlock(new Block(2, "21/08/2017", { amount: 8 }));
+// console.log('Mining block 2...');
+// voterBlock.addBlock(new Block(2, "21/08/2017", { amount: 8 }));
 
-voterBlock.chain[1].hash = voterBlock.chain[1].calculateHash();
+// voterBlock.chain[1].hash = voterBlock.chain[1].calculateHash();
 
-console.log("Blockchain valid? " + voterBlock.isChainValid());
+// console.log("Blockchain valid? " + voterBlock.isChainValid());
 
-console.log(JSON.stringify(voterBlock, null, 4));
+// console.log(JSON.stringify(voterBlock, null, 4));
 
 /***/ }),
 /* 2 */
